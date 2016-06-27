@@ -11,9 +11,9 @@ Build the test programs & deps:
 
 ```
 cd go/
-go build
+go build main.go
 
 cd otto/
 go get
-go build
+go build main.go
 ```
