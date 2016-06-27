@@ -2,9 +2,9 @@ package main
 
 import(
 	"testing"
-	"fmt"
-
 	"os/exec"
+  "runtime"
+  "fmt"
 )
 
 func execute( command string, args string) {
@@ -15,7 +15,12 @@ func execute( command string, args string) {
 }
 
 func benchmarkGo( b *testing.B ) {
-  execute( "go/main", "" )
+  switch runtime.GOOS {
+  case "windows":
+    execute( "go/main.exe", "" )
+  default:
+    execute( "go/main", "" )
+  }
 }
 
 func benchmarkNode( b *testing.B ) {
@@ -23,10 +28,17 @@ func benchmarkNode( b *testing.B ) {
 }
 
 func benchmarkOtto( b *testing.B ) {
-  execute( "otto/main", "" )
+  switch runtime.GOOS {
+  case "windows":
+    execute( "otto/main.exe", "" )
+  default:
+    execute( "otto/main", "" )
+  }
 }
 
 func main() {
+
+  fmt.Println("GOOS =", runtime.GOOS, "\n")
   GoResult := testing.Benchmark(benchmarkGo)
   fmt.Println("Go:")
   nanoseconds := float64(GoResult.T.Nanoseconds()) / float64(GoResult.N)
